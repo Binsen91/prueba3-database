@@ -50,7 +50,7 @@ def processRequest(req):
         res = makeWebhookResultForGetJoke(data)
         
     elif req.get("result").get("action")=="getdatos":
-        baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={"Nombre": "Mr Robot"}"
+        baseurl = 'https://bdprueba1-05d3.restdb.io/rest/libro-1?q={"Nombre": "Mr Robot"}'
         result = urlopen(baseurl).read()
         data = json.loads(result)
         res = cogeDatos(data)
