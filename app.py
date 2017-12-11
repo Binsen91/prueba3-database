@@ -50,10 +50,20 @@ def processRequest(req):
         res = makeWebhookResultForGetJoke(data)
         
     elif req.get("result").get("action")=="getdatos":
-        baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={'Nombre':'Mr Robot'}"
-        result = urlopen(baseurl).read()
-        data = json.loads(result)
-        res = cogeDatos(data)
+        cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+        speech = "The cost of shipping to Africa is " + str(cost["Africa"]) + " euros."
+        return {
+            "speech": speech,
+            "displayText": speech,
+            #"data": {},
+            # "contextOut": [],
+            "source": "apiai-onlinestore-shipping"
+        }
+        
+        # baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={'Nombre':'Mr Robot'}"
+        # result = urlopen(baseurl).read()
+        # data = json.loads(result)
+        # res = cogeDatos(data)
             
     else:
         return {}
