@@ -50,21 +50,22 @@ def processRequest(req):
         res = makeWebhookResultForGetJoke(data)
         
     elif req.get("result").get("action")=="getdatos":      
-        # baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={'Nombre':'Mr Robot'}"
-        # result = urlopen(baseurl).read()
+        baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={'Nombre':'Mr Robot'}"
+        result = urlopen(baseurl).read()
         # data = json.loads(result)
         # res = cogeDatos(data)
-        
-        url = "https://bdprueba1-05d3.restdb.io/rest/libro-1"
-        headers = {
-            'content-type': "application/json",
-            'x-apikey': "3b659aa858238c9bf9cdb363f6d7e00e47cc1",
-            'cache-control': "no-cache"
-            }
 
-        response = requests.request("GET", url, headers=headers)
-        speech = response.text
-        # speech = str(result["Mr Robot"]) + " euros."
+#        url = "https://bdprueba1-05d3.restdb.io/rest/libro-1"
+#        headers = {
+#            'content-type': "application/json",
+#            'x-apikey': "3b659aa858238c9bf9cdb363f6d7e00e47cc1",
+#            'cache-control': "no-cache"
+#            }
+
+#        response = requests.request("GET", url, headers=headers)
+#        speech = response.text
+
+        speech = str(result["Mr Robot"])
         
         return {
             "speech": speech,
