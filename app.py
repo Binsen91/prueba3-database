@@ -8,6 +8,8 @@ from urllib.error import HTTPError
 
 import json
 import os
+import sys
+import pymongo
 
 from flask import Flask
 from flask import request
@@ -49,7 +51,10 @@ def processRequest(req):
         data = json.loads(result)
         res = makeWebhookResultForGetJoke(data)
         
-    elif req.get("result").get("action")=="getdatos":      
+    elif req.get("result").get("action")=="getdatos":  
+        res = makeDatabase()
+    
+    elif req.get("result").get("action")=="getdatos2":      
         baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={'Nombre':'Mr Robot'}"
         result = urlopen(baseurl).read()
         # data = json.loads(result)
@@ -101,6 +106,24 @@ def makeYqlQuery(req):
 
     return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
 
+def makeDatabase():
+    uri = 'mongodb://telerbot:telerbot@ds135866.mlab.com:35866/prueba1-telerbot'
+
+    client = pymongo.MongoClient(uri)
+    db = client.get_database("prueba1-telerbot")
+    songs = db.songs
+
+    records = songs.find_one({'decade': '1970s'})
+    variable = (records['song'])
+    speechText = variable
+    displayText = variable
+    return {
+        "speech": speechText,
+        "displayText": displayText,
+        # "data": data,
+        # "contextOut": [],
+        "source": "apiai-weather-webhook-sample"
+    }
 
 def makeWebhookResultForGetJoke(data):
     valueString = data.get('value')
