@@ -93,13 +93,13 @@ def makeDatabasePlano(req):
     db = client.get_database("prueba1-telerbot")
     piezas = db.piezasV0
 
-    records = piezas.find_one({'plano': pieza})
-    variable = ('La pieza ' & records['articulo'] & 'tiene' & '/n' &
-               'Plano: ' & records['plano'] & '/n' &
-               'Descripción: ' & records['descripcion'] & '/n' &
-               'Material 1: ' & records['material1'] & '/n' &
-               'Material 2: ' & records['material2'] & '/n' &
-               'Pieza de proyecto: ' & records['pieza_proy'])
+    records = songs.find_one({'plano': pieza})
+    variable = ('La pieza ' + str(records['articulo']) + ' tiene' + '\n'
+               + 'Plano: ' + str(records['plano']) + '\n'
+               + 'Descripción: ' + str(records['descripcion']) + '\n'
+               + 'Material 1: ' + str(records['material1']) + '\n'
+               + 'Material 2: ' + str(records['material2']) + '\n'
+               + 'Pieza de proyecto: ' + str(records['piezaProy']))
     speechText = variable
     displayText = variable
     return {
