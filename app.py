@@ -51,35 +51,9 @@ def processRequest(req):
         data = json.loads(result)
         res = makeWebhookResultForGetJoke(data)
         
-    elif req.get("result").get("action")=="getdatos":  
-        res = makeDatabase()
-    
-    elif req.get("result").get("action")=="getdatos2":      
-        baseurl = "https://bdprueba1-05d3.restdb.io/rest/libro-1?q={'Nombre':'Mr Robot'}"
-        result = urlopen(baseurl).read()
-        # data = json.loads(result)
-        # res = cogeDatos(data)
+    elif req.get("result").get("action")=="getPlano":  
+        res = makeDatabasePlano(req)
 
-#        url = "https://bdprueba1-05d3.restdb.io/rest/libro-1"
-#        headers = {
-#            'content-type': "application/json",
-#            'x-apikey': "3b659aa858238c9bf9cdb363f6d7e00e47cc1",
-#            'cache-control': "no-cache"
-#            }
-
-#        response = requests.request("GET", url, headers=headers)
-#        speech = response.text
-
-        speech = str(result["Mr Robot"])
-        
-        return {
-            "speech": speech,
-            "displayText": speech,
-            #"data": {},
-            # "contextOut": [],
-            "source": "apiai-onlinestore-shipping"
-        }
-    
     elif req.get("result").get("action")=="getPrecio":
         cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
         speech = "The cost of shipping to Africa is " + str(cost["Africa"]) + " euros."
@@ -106,15 +80,26 @@ def makeYqlQuery(req):
 
     return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
 
-def makeDatabase():
+def makeDatabasePlano(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    pieza = parameters.get("number")
+    if pieza is None:
+        return None
+    
     uri = 'mongodb://telerbot:telerbot@ds135866.mlab.com:35866/prueba1-telerbot'
 
     client = pymongo.MongoClient(uri)
     db = client.get_database("prueba1-telerbot")
-    songs = db.songs
+    piezas = db.piezasV0
 
-    records = songs.find_one({'decade': '1970s'})
-    variable = (records['song'])
+    records = piezas.find_one({'plano': pieza})
+    variable = ('La pieza ' & records['articulo'] & 'tiene' & '/n' &
+               'Plano: ' & records['plano'] & '/n' &
+               'Descripción: ' & records['descripcion'] & '/n' &
+               'Material 1: ' & records['material1'] & '/n' &
+               'Material 2: ' & records['material2'] & '/n' &
+               'Pieza de proyecto: ' & records['pieza_proy'])
     speechText = variable
     displayText = variable
     return {
@@ -130,17 +115,6 @@ def makeWebhookResultForGetJoke(data):
     joke = valueString.get('joke')
     speechText = joke
     displayText = joke
-    return {
-        "speech": speechText,
-        "displayText": displayText,
-        # "data": data,
-        # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
-    }
-def cogeDatos(data):
-    temporadas = data.get('temporadas')
-    speechText = temporadas
-    displayText = temporadas
     return {
         "speech": speechText,
         "displayText": displayText,
