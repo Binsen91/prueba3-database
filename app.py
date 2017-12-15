@@ -94,12 +94,12 @@ def makeDatabasePlano(req):
     piezas = db.piezasV0
 
     records = piezas.find_one({'articulo': pieza})
-    variable = ('La pieza ' + str(records['articulo']) + ' tiene... '
-               + 'Plano: ' + str(records['plano'])
-               + 'Descripción: ' + str(records['descripcion'])
-               + 'Material 1: ' + str(records['material1'])
-               + 'Material 2: ' + str(records['material2'])
-               + 'Pieza de proyecto: ' + str(records['piezaProy']))
+    variable = ('La pieza ' + str(records['articulo']) + ' tiene... ' + 'el plano: ' + str(records['plano']))
+               
+               #+ 'Descripción: ' + str(records['descripcion'])
+               #+ 'Material 1: ' + str(records['material1'])
+               #+ 'Material 2: ' + str(records['material2'])
+               #+ 'Pieza de proyecto: ' + str(records['piezaProy']))
     speechText = variable
     displayText = variable
     return {
